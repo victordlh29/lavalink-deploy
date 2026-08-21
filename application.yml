@@ -27,7 +27,11 @@ lavalink:
 
     statsUpdateInterval: 60
     gcInterval: 120
-
+    
+httpConfig:
+  httpConnectionTimeout: 10000
+  httpReadTimeout: 45000
+  
   # Dependencias de plugins (auto-descarga)
   plugins:
     - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.2"
