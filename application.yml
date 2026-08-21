@@ -54,7 +54,7 @@ plugins:
     oauth:
       enabled: true
       skipInitialization: true
-       refreshToken: "${YT_REFRESH_TOKEN:}"
+      refreshToken: "${YT_REFRESH_TOKEN:}"
 
 # Spring Boot actuator (for health checks)
 management:
