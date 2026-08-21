@@ -1,9 +1,5 @@
 # Lavalink v4.2.2 Configuration for Render.com
 # Docs: https://lavalink.dev/configuration.html
-#
-# Render assigns a port via the PORT environment variable.
-# Spring Boot reads SERVER_PORT to set the listening port.
-# We set SERVER_PORT in Dockerfile to match Render's PORT.
 
 server:
   port: ${SERVER_PORT:10000}
@@ -13,9 +9,10 @@ lavalink:
   server:
     password: ${LAVALINK_PASSWORD:youshallnotpass}
     
-    # Sources enabled
+    # Disable built-in YouTube source (deprecated)
+    # We use the youtube-source plugin instead
     sources:
-      youtube: true
+      youtube: false
       soundcloud: true
       bandcamp: true
       twitch: true
@@ -25,13 +22,6 @@ lavalink:
     youtubePlaylistLoadLimit: 6
     playerUpdateInterval: 30
     isTrace: false
-    
-    # YouTube specific
-    youtubeSearchEnabled: true
-    soundcloudSearchEnabled: true
-    
-    # Auto-update tracks
-    autoUpdate: true
     
     # Ratelimit settings (for YouTube)
     ratelimit:
@@ -43,6 +33,27 @@ lavalink:
     
     # GC settings
     gcInterval: 120
+
+  # YouTube Source Plugin (replaces deprecated built-in YouTube)
+  # https://github.com/lavalink-devs/youtube-source
+  plugins:
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.2"
+      snapshot: false
+
+  # YouTube Source Plugin configuration
+  youtube:
+    enabled: true
+    allowSearch: true
+    allowDirectVideoIds: true
+    allowDirectPlaylistIds: true
+    # Clients to use for track loading (queried in order)
+    # See: https://github.com/lavalink-devs/youtube-source#available-clients
+    clients:
+      - WEB
+      - ANDROID_VR
+      - WEBEMBEDDED
+      - MUSIC
+      - TVHTML5_SIMPLY
 
 # Spring Boot actuator (for health checks)
 management:

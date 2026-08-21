@@ -14,8 +14,13 @@ RUN curl -L -o /app/Lavalink.jar https://github.com/lavalink-devs/Lavalink/relea
 # Copy your custom configuration
 COPY application.yml /app/application.yml
 
+# Create plugins directory (Lavalink downloads plugins here)
+RUN mkdir -p /app/plugins && chmod 777 /app/plugins
+
+# Make app directory writable (for plugin downloads)
+RUN chmod 777 /app
+
 # Render sets PORT env var. We map it to SERVER_PORT for Spring Boot (Lavalink).
-# Default to 10000 if not set.
 ENV SERVER_PORT=${PORT:-10000}
 
 # Expose the port Render will route to
