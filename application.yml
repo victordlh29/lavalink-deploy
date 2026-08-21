@@ -27,11 +27,7 @@ lavalink:
 
     statsUpdateInterval: 60
     gcInterval: 120
-    
-httpConfig:
-  httpConnectionTimeout: 10000
-  httpReadTimeout: 45000
-  
+
   # Dependencias de plugins (auto-descarga)
   plugins:
     - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.2"
@@ -45,7 +41,9 @@ plugins:
     allowDirectVideoIds: true
     allowDirectPlaylistIds: true
     # Orden de clientes al cargar/reproducir.
-    # TVHTML5_SIMPLY y ANDROID_VR son los que menos bloquea YouTube desde IPs de datacenter.
+    # TV es el UNICO cliente OAuth-compatible (tabla oficial del plugin): sin el,
+    # el token no se usa y YouTube sigue pidiendo login desde IPs de datacenter.
+    # Va al final porque solo aporta reproduccion (sin busqueda ni metadatos).
     clients:
       - TVHTML5_SIMPLY
       - ANDROID_VR
@@ -53,9 +51,10 @@ plugins:
       - WEB
       - TV
     # OAuth: evita el "This video requires login" (LOGIN_REQUIRED).
-    # En el primer arranque, los logs de Render muestran un codigo para
-    # https://www.google.com/device — autorizalo con una cuenta BURNER (no la principal).
-    # Tras autorizar, pega el refreshToken impreso en logs y pon skipInitialization: true.
+    # El refreshToken NUNCA va escrito aqui (repo publico): se setea como variable
+    # de entorno YT_REFRESH_TOKEN en el panel de Render y Spring la resuelve.
+    # Para generarlo: skipInitialization false -> arrancar -> codigo en google.com/device
+    # (cuenta BURNER) -> copiar el refresh token de los logs -> crear la env var en Render.
     oauth:
       enabled: true
       skipInitialization: true
