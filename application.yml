@@ -47,6 +47,7 @@ plugins:
       - ANDROID_VR
       - MUSIC
       - WEB
+      - TV
     # OAuth: evita el "This video requires login" (LOGIN_REQUIRED).
     # En el primer arranque, los logs de Render muestran un codigo para
     # https://www.google.com/device — autorizalo con una cuenta BURNER (no la principal).
