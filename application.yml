@@ -1,5 +1,9 @@
 # Lavalink v4.2.2 Configuration for Render.com
 # Docs: https://lavalink.dev/configuration.html
+# Plugin config: https://github.com/lavalink-devs/youtube-source
+#
+# IMPORTANTE: la config de plugins va en el NIVEL RAIZ (`plugins:`),
+# NO dentro de `lavalink:` (ahi se ignora silenciosamente).
 
 server:
   port: ${SERVER_PORT:10000}
@@ -8,52 +12,49 @@ server:
 lavalink:
   server:
     password: ${LAVALINK_PASSWORD:youshallnotpass}
-    
-    # Disable built-in YouTube source (deprecated)
-    # We use the youtube-source plugin instead
+
+    # Built-in YouTube source deprecated: se usa el plugin de abajo
     sources:
       youtube: false
       soundcloud: true
       bandcamp: true
       twitch: true
-    
-    # Buffer and connection settings
+
     bufferDurationMs: 400
     youtubePlaylistLoadLimit: 6
     playerUpdateInterval: 30
     isTrace: false
-    
-    # Ratelimit settings (for YouTube)
-    ratelimit:
-      ipBlocks: []
-      excludedIps: []
-    
-    # Stats (exposed at /v4/stats)
+
     statsUpdateInterval: 60
-    
-    # GC settings
     gcInterval: 120
 
-  # YouTube Source Plugin (replaces deprecated built-in YouTube)
-  # https://github.com/lavalink-devs/youtube-source
+  # Dependencias de plugins (auto-descarga)
   plugins:
     - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.2"
       snapshot: false
 
-  # YouTube Source Plugin configuration
+# Config del plugin YouTube (nivel raiz)
+plugins:
   youtube:
     enabled: true
     allowSearch: true
     allowDirectVideoIds: true
     allowDirectPlaylistIds: true
-    # Clients to use for track loading (queried in order)
-    # See: https://github.com/lavalink-devs/youtube-source#available-clients
+    # Orden de clientes al cargar/reproducir.
+    # TVHTML5_SIMPLY y ANDROID_VR son los que menos bloquea YouTube desde IPs de datacenter.
     clients:
-      - WEB
-      - ANDROID_VR
-      - WEBEMBEDDED
-      - MUSIC
       - TVHTML5_SIMPLY
+      - ANDROID_VR
+      - MUSIC
+      - WEB
+    # OAuth: evita el "This video requires login" (LOGIN_REQUIRED).
+    # En el primer arranque, los logs de Render muestran un codigo para
+    # https://www.google.com/device — autorizalo con una cuenta BURNER (no la principal).
+    # Tras autorizar, pega el refreshToken impreso en logs y pon skipInitialization: true.
+    oauth:
+      enabled: true
+      skipInitialization: false
+      # refreshToken: ""
 
 # Spring Boot actuator (for health checks)
 management:
