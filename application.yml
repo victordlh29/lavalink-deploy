@@ -53,8 +53,8 @@ plugins:
     # Tras autorizar, pega el refreshToken impreso en logs y pon skipInitialization: true.
     oauth:
       enabled: true
-      skipInitialization: false
-      # refreshToken: ""
+      skipInitialization: true
+       refreshToken: "${YT_REFRESH_TOKEN:}"
 
 # Spring Boot actuator (for health checks)
 management:
