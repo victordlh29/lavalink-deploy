@@ -1,0 +1,80 @@
+# Lavalink v4.2.2 Configuration for Render.com
+# Docs: https://lavalink.dev/configuration.html
+
+server:
+  port: ${LAVALINK_PORT:-2334}
+  address: 0.0.0.0
+
+lavalink:
+  server:
+    password: ${LAVALINK_PASSWORD:-youshallnotpass}
+    
+    # Sources enabled
+    sources:
+      youtube: true
+      soundcloud: true
+      Bandcamp: true
+      iTunes: true
+      Vimeo: true
+      Nico: true
+    
+    # Buffer and connection settings
+    bufferDurationMs: 400
+    youtubePlaylistLoadLimit: 6
+    playerUpdateInterval: 30
+    isTrace: false
+    
+    # YouTube specific
+    youtubeSearchEnabled: true
+    soundcloudSearchEnabled: true
+    
+    # Auto-update tracks
+    autoUpdate: true
+    
+    # Ratelimit settings (for YouTube)
+    ratelimit:
+      ipBlocks: []
+      excludedIps: []
+    
+    # Load balancer
+    loadBalancing:
+      strategy: ROUND_ROBIN
+      ip: []
+    
+    # Stats (exposed at /v4/stats)
+    statsUpdateInterval: 60
+    
+    # GC settings
+    gcInterval: 120
+    
+    # GamePlayerSync
+    gamePlayerSync: false
+    
+    # TrackStuckEvent threshold (ms)
+    trackStuckThresholdMs: 10000
+    
+    # If true, will send PlayerUpdate to Lavalink
+    # every time a player is updated locally
+    forceSendPlayerUpdate: false
+    
+    # If true, Lavalink will automatically handle track end events
+    # by playing the next track in the queue
+    # (not used by shoukaku, but harmless)
+    autoPlay: false
+    
+    # Distribute queue across shards
+    # not needed for single-bot setup
+
+  plugins:
+    # YouTube plugin (official, built-in since v4)
+    # No external plugin needed - YouTube support is core
+
+# Spring Boot actuator (optional)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
